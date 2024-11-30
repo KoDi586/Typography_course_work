@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import MainPage from "./screens/MainPage"
+import OrderForm from './screens/OrderForm';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,6 +13,7 @@ root.render(
     <Router>
       <Routes>
         <Route path='/' element={<MainPage/>}/>
+        <Route path='/neworder' element={<OrderForm/>}/>
       </Routes>
     </Router>
   </React.StrictMode>
