@@ -1,12 +1,179 @@
-import { Button, Card, Container, Form } from "react-bootstrap";
+import { Button, Card, CardBody, CardHeader, Container, Form, Table } from "react-bootstrap";
 import PHeader from "../components/PHeader";
 import { useEffect, useState } from "react";
 
 import axios from 'axios'
+import PFooter from "../components/PFooter";
 
 const OrderForm = () => {
 
     const [product, setProduct] = useState([])
+    const [order, setOrder] = useState([])
+
+
+    // const order = [{
+    //     orderId: 1,
+    //     client: {
+    //        name: "dsadas",
+    //        secondName: "asddas",
+    //        email: "strindasdasg",
+    //        phone: "striadssdang",
+    //        card: "strdasdasing"
+    //      },
+    //      orderItems: [
+    //        {
+    //          product: "stsdadsaring",
+    //          count: 1
+    //        },
+    //     {
+    //         product: "stridasdsang",
+    //           count: 2
+    //         }
+    //      ],
+    //      totalPrice: 1000.99
+    //    }, {
+    //     orderId: 2,
+    //     client: {
+    //        name: "dsadas",
+    //        secondName: "asddas",
+    //        email: "strindasdasg",
+    //        phone: "striadssdang",
+    //        card: "strdasdasing"
+    //      },
+    //      orderItems: [
+    //        {
+    //          product: "stsdadsaring",
+    //          count: 1
+    //        },
+    //     {
+    //         product: "stridasdsang",
+    //           count: 2
+    //         }
+    //      ],
+    //      totalPrice: 1000.99
+    //    }, {
+    //     orderId: 2,
+    //     client: {
+    //        name: "dsadas",
+    //        secondName: "asddas",
+    //        email: "strindasdasg",
+    //        phone: "striadssdang",
+    //        card: "strdasdasing"
+    //      },
+    //      orderItems: [
+    //        {
+    //          product: "stsdadsaring",
+    //          count: 1
+    //        },
+    //     {
+    //         product: "stridasdsang",
+    //           count: 2
+    //         }
+    //      ],
+    //      totalPrice: 1000.99
+    //    }, {
+    //     orderId: 2,
+    //     client: {
+    //        name: "dsadas",
+    //        secondName: "asddas",
+    //        email: "strindasdasg",
+    //        phone: "striadssdang",
+    //        card: "strdasdasing"
+    //      },
+    //      orderItems: [
+    //        {
+    //          product: "stsdadsaring",
+    //          count: 1
+    //        },
+    //     {
+    //         product: "stridasdsang",
+    //           count: 2
+    //         }
+    //      ],
+    //      totalPrice: 1000.99
+    //    }, {
+    //     orderId: 2,
+    //     client: {
+    //        name: "dsadas",
+    //        secondName: "asddas",
+    //        email: "strindasdasg",
+    //        phone: "striadssdang",
+    //        card: "strdasdasing"
+    //      },
+    //      orderItems: [
+    //        {
+    //          product: "stsdadsaring",
+    //          count: 1
+    //        },
+    //     {
+    //         product: "stridasdsang",
+    //           count: 2
+    //         }
+    //      ],
+    //      totalPrice: 1000.99
+    //    }, {
+    //     orderId: 2,
+    //     client: {
+    //        name: "dsadas",
+    //        secondName: "asddas",
+    //        email: "strindasdasg",
+    //        phone: "striadssdang",
+    //        card: "strdasdasing"
+    //      },
+    //      orderItems: [
+    //        {
+    //          product: "stsdadsaring",
+    //          count: 1
+    //        },
+    //     {
+    //         product: "stridasdsang",
+    //           count: 2
+    //         }
+    //      ],
+    //      totalPrice: 1000.99
+    //    }, {
+    //     orderId: 2,
+    //     client: {
+    //        name: "dsadas",
+    //        secondName: "asddas",
+    //        email: "strindasdasg",
+    //        phone: "striadssdang",
+    //        card: "strdasdasing"
+    //      },
+    //      orderItems: [
+    //        {
+    //          product: "stsdadsaring",
+    //          count: 1
+    //        },
+    //     {
+    //         product: "stridasdsang",
+    //           count: 2
+    //         }
+    //      ],
+    //      totalPrice: 1000.99
+    //    }, {
+    //     orderId: 2,
+    //     client: {
+    //        name: "dsadas",
+    //        secondName: "asddas",
+    //        email: "strindasdasg",
+    //        phone: "striadssdang",
+    //        card: "strdasdasing"
+    //      },
+    //      orderItems: [
+    //        {
+    //          product: "stsdadsaring",
+    //          count: 1
+    //        },
+    //     {
+    //         product: "stridasdsang",
+    //           count: 2
+    //         }
+    //      ],
+    //      totalPrice: 1000.99
+    //    }
+    // ];
+
 
     useEffect(
         () => {
@@ -15,8 +182,18 @@ const OrderForm = () => {
             }).catch(error => {
                 console.log(error);
             });
-        },[]
+        }, 
+        []
     )
+    // useEffect(
+    //     () => {
+    //         axios.get("http://192.168.0.201:8089/api/order/all").then(response => {
+    //             setOrder(response.data.children)
+    //         }).catch(error => {
+    //             console.log(error);
+    //         });
+    //     }
+    // )
 
     console.info(product)
 
@@ -73,7 +250,6 @@ const OrderForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setResponseMessage('');
-        console.info({formData})
 
         const payload = {
             client: {
@@ -87,7 +263,7 @@ const OrderForm = () => {
         };
 
         try {
-            const response = await axios.post('http://192.168.0.201:8089/api/product', payload);
+            const response = await axios.post('http://192.168.0.201:8089/api/order', payload);
             setResponseMessage(`Успех! Ответ: ${response.data.message}`);
         } catch (error) {
             if (error.response) {
@@ -103,8 +279,8 @@ const OrderForm = () => {
     return (
         <>
             <PHeader/>
-            <Container style={{marginTop: '25px', marginBottom: '25px'}} >
-                <Form onSubmit={handleSubmit}>
+            <Container style={{marginTop: '75px', marginBottom: '25px'}} >
+                <Form onSubmit={handleSubmit} style={{marginBottom: '25px'}}>
                     <Form.Group>
                         <Form.Label>Имя</Form.Label>
                         <Form.Control type="text" placeholder="Введите имя" name="name" onChange={handleInputChange}/>
@@ -125,7 +301,7 @@ const OrderForm = () => {
                         <Form.Label>Номер карты</Form.Label>
                         <Form.Control type="text" placeholder="Введите номер банковской карты" name="card" onChange={handleInputChange}/>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                    <Form.Group className="mb-3" controlId="formBasicCheckbox" style={{marginBottom: '25px', marginTop: '25px'}}>
                         <Form.Label className="d-flex flex-wrap justify-content-center">Виды продуктов</Form.Label>
                         <Container style={{gap:"30px"}} className="d-flex flex-wrap justify-content-center">
                             {product.map((product) => (
@@ -149,12 +325,50 @@ const OrderForm = () => {
                         </Container>
                     </Form.Group>
                     <Container  className="d-flex flex-wrap justify-content-center">
-                    <Button variant="dark" type="submit">
-                         Оформить заказ
-                    </Button>
+                        <Button variant="dark" type="submit">
+                            Оформить заказ
+                        </Button>
                     </Container>
                 </Form>
+                <Table>
+                    <thead>
+                        <tr>
+                            <th style={{textAlign: 'center'}}>№</th>
+                            <th style={{textAlign: 'center'}}>Имя</th>
+                            <th style={{textAlign: 'center'}}>Фамилия</th>
+                            <th style={{textAlign: 'center'}}>Почта</th>
+                            <th style={{textAlign: 'center'}}>Номер телефона</th>
+                            <th style={{textAlign: 'center'}}>Номер карты</th>
+                            <th style={{textAlign: 'center'}}>Товары</th>
+                            <th style={{textAlign: 'center'}}>Финальная цена</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {order.map((orders) => (
+                            <>
+                                <tr> 
+                                    <td>{orders.orderId}</td>
+                                    <td>{orders.client.name}</td>
+                                    <td>{orders.client.secondName}</td>
+                                    <td>{orders.client.email}</td>
+                                    <td>{orders.client.phone}</td>
+                                    <td>{orders.client.card}</td>
+                                    <td>
+                                        {orders.orderItems.map((orderItem) => (
+                                            <Card>
+                                                <CardHeader>{orderItem.product}</CardHeader>
+                                                <CardBody style={{textAlign: 'center'}}>{orderItem.count}</CardBody>
+                                            </Card>
+                                        ))}
+                                    </td>
+                                    <td>{orders.totalPrice}</td>
+                                </tr>
+                            </>
+                        ))}
+                    </tbody>
+                </Table>
             </Container>
+            <PFooter/>
         </>
     )
 };

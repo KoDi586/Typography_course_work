@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const PHeader = () => {
     return (
         <>
-            <Navbar bg="dark" data-bs-theme="dark" expand="lg" className="bg-body-tertiary" style={{fontWeight: '900', }}>
+            <Navbar bg="dark" data-bs-theme="dark" expand="lg" className="bg-body-tertiary" style={{fontWeight: '900'}} fixed="top">
                 <Container>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
