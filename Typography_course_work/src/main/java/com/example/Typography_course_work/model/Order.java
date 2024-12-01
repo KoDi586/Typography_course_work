@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "\"order\"")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,5 +21,5 @@ public class Order {
     private Long clientId;
 
     @Column(name = "order_items")
-    private List<Long> orderItems;
+    private List<Integer> orderItems;
 }

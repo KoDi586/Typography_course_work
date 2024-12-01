@@ -5,12 +5,17 @@ server:
 
 spring:
   sql:
-      init:
-        data-locations: classpath:sql/data.sql
-        schema-locations: classpath:sql/schema.sql
-        mode: always
+    init:
+      data-locations: classpath:sql/data.sql
+      schema-locations: classpath:sql/schema.sql
+      mode: always
 
   datasource:
     url: jdbc:postgresql://localhost:5433/typography_db
     username: postgres
     password: 1234
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update

@@ -25,7 +25,7 @@ public class Product {
     private String title;
 
     @Column(name = "materials")
-    private List<Long> materials; // Для связи через массив id
+    private List<Integer> materials; // Для связи через массив id
 
     @Column(nullable = false)
     private Integer price;

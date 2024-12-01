@@ -34,3 +34,5 @@ VALUES
     (10, 'Тумба прикроватная', ARRAY[4, 5], 7000)
 ON CONFLICT (id) DO NOTHING;
 
+
+
