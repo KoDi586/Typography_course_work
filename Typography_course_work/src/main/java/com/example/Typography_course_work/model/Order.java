@@ -17,10 +17,9 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id"/*, nullable = false/*, onDelete = ForeignKeyAction.CASCADE*/)
-    private Client client;
+    @Column(name = "client_id")
+    private Long clientId;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL/*, orphanRemoval = true*/)
-    private List<OrderItem> orderItems;
+    @Column(name = "order_items")
+    private List<Long> orderItems;
 }

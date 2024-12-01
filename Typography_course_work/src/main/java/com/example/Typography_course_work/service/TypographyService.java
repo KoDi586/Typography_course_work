@@ -37,51 +37,61 @@ public class TypographyService {
     public void create(CreateOrderRequestDto createOrderRequestDto) {
         log.info(createOrderRequestDto.toString());
         try {
-            orderRepository.save(convertToOrderModel(createOrderRequestDto));
+            orderRepository.save(convertOrderDtoToOrderModel(createOrderRequestDto));
         } catch (Exception e) {
             log.info("ошибка при сохранении заказа");
         }
     }
 
-    private Order convertToOrderModel(CreateOrderRequestDto createOrderRequestDto) {
+    private Order convertOrderDtoToOrderModel(CreateOrderRequestDto createOrderRequestDto) {
         Order orderModel = new Order();
-        orderRepository.save(orderModel);
-        Client clientModel = convertClientDtoToClientModel(createOrderRequestDto.getClient());
-        List<OrderItem> orderItemList = convertOrderItemsDtoToOrderItemModel(createOrderRequestDto.getOrderItems(), orderModel);
-        orderModel.setClient(clientModel);
-        orderModel.setOrderItems(orderItemList);
-        orderRepository.save(orderModel);
+//        orderRepository.save(orderModel);
+        Long clientId = convertClientDtoToClientModel(createOrderRequestDto.getClient()).getId();
+        List<Long> orderItemListIds = convertOrderItemsDtoToOrderItemModel(createOrderRequestDto.getOrderItems());
+        orderModel.setClientId(clientId);
+//        for (OrderItem orderItem : orderItemListIds) {
+//
+//        }
+        orderModel.setOrderItems(orderItemListIds);
+//        orderModel.setOrderItems(orderItemList1);
         return orderModel;
+//        return orderModel;
     }
 
-    private List<OrderItem> convertOrderItemsDtoToOrderItemModel(List<OrderItemRequestDto> orderItems, Order orderModel) {
-        List<OrderItem> result = new ArrayList<>();
+    private List<Long> convertOrderItemsDtoToOrderItemModel(List<OrderItemRequestDto> orderItems) {
+        List<Long> result = new ArrayList<>();
         for (OrderItemRequestDto orderItemRequestDto : orderItems) {
-            result.add(convertOrderItemDtoToOrderItemModel(orderItemRequestDto, orderModel));
+            result.add(convertOrderItemDtoToOrderItemModel(orderItemRequestDto).getId());
         }
         return result;
     }
 
-    private OrderItem convertOrderItemDtoToOrderItemModel(OrderItemRequestDto dto, Order orderModel)  {
-        OrderItem orderItem = new OrderItem(
-                1L,
-                orderModel,
-                productRepository.findById(Long.parseLong(dto.getProduct())).get(),
-                dto.getCount());
-        orderItemRepository.save(orderItem);
-        return orderItem;
+    private OrderItem convertOrderItemDtoToOrderItemModel(OrderItemRequestDto dto)  {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setCount(dto.getCount());
+        Long productId = productRepository.findById(Long.parseLong(dto.getProduct())).get().getId();
+        orderItem.setProductId(productId);
+        return orderItemRepository.save(orderItem);
+//        return orderItem;
     }
 
-    private Client convertClientDtoToClientModel(ClientRequestDto clientRequestDto) {
+    private Client convertClientDtoToClientModel(ClientRequestDto dto) {
+        Client client = new Client();
+        client.setName(dto.getName());
+        client.setSecondName(dto.getSecondName());
+        client.setCard(dto.getCard());
+        client.setPhone(dto.getPhone());
+        client.setEmail(dto.getEmail());
+        return clientRepository.save(client);
         //        clientRepository.save(client);
-        return new Client(
-                0L,
-                clientRequestDto.getName(),
-                clientRequestDto.getSecondName(),
-                clientRequestDto.getEmail(),
-                clientRequestDto.getPhone(),
-                clientRequestDto.getCard()
-        );
+//        return new Client(
+//                0L,
+//                clientRequestDto.getName(),
+//                clientRequestDto.getSecondName(),
+//                clientRequestDto.getEmail(),
+//                clientRequestDto.getPhone(),
+//                clientRequestDto.getCard()
+//        );
     }
 
     public AllProductResponseDto getAll() {

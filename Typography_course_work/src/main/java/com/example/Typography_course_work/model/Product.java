@@ -21,13 +21,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String title;
 
-    @ElementCollection
-    @CollectionTable(name = "product_material", joinColumns = @JoinColumn(name = "product_id"))
-    @Column(name = "material_id")
-    private List<Integer> materials; // Для связи через массив id
+    @Column(name = "materials")
+    private List<Long> materials; // Для связи через массив id
 
     @Column(nullable = false)
     private Integer price;

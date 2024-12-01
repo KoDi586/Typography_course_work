@@ -2,7 +2,6 @@ package com.example.Typography_course_work.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.engine.internal.Cascade;
 
 @Entity
 @Table(name = "provider")
@@ -19,8 +18,7 @@ public class Provider {
     @Column(nullable = false, length = 255)
     private String name;
 
-    @OneToOne
-    @JoinColumn(name = "material_id", unique = true, nullable = false/*, foreignKey*/)
-    private Material material;
+    @Column(name = "material_id", nullable = false)
+    private Long materialId;
 }
 

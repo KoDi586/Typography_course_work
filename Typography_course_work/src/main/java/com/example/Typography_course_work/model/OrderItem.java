@@ -16,13 +16,11 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false/*, onDelete = ForeignKeyAction.CASCADE*/)
-    private Order order;
+    @Column(name = "order_id", nullable = false)
+    private Long orderId;
 
-    @OneToOne
-    @JoinColumn(name = "product_id", unique = true, nullable = false/*, onDelete = ForeignKeyAction.CASCADE*/)
-    private Product product;
+    @Column(name = "product_id", nullable = false)
+    private Long productId;
 
     @Column(nullable = false)
     private Integer count;
