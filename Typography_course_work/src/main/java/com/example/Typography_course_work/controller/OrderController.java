@@ -1,12 +1,12 @@
 package com.example.Typography_course_work.controller;
 
-import com.example.Typography_course_work.dto.OrderDTO.CreateOrderRequestDto;
+import com.example.Typography_course_work.dto.OrderDTO.create.CreateOrderRequestDto;
+import com.example.Typography_course_work.dto.OrderDTO.get.AllOrderResponseDto;
+import com.example.Typography_course_work.dto.OrderDTO.get.OrderResponseDto;
 import com.example.Typography_course_work.service.TypographyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,4 +20,8 @@ public class OrderController {
         service.create(createOrderRequestDto);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<AllOrderResponseDto> getAllOrder() {
+        return ResponseEntity.ok(service.getAllOrders());
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.Typography_course_work.dto.OrderDTO;
+package com.example.Typography_course_work.dto.OrderDTO.create;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

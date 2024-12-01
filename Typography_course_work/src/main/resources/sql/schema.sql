@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS provider (
 -- Создание таблицы order
 CREATE TABLE IF NOT EXISTS "order" (
     id SERIAL PRIMARY KEY,
-    client_id INT NOT NULL, -- Один клиент в заказе
+    client_id INT, -- Один клиент в заказе
     FOREIGN KEY (client_id) REFERENCES client (id) ON DELETE CASCADE
 );
 
