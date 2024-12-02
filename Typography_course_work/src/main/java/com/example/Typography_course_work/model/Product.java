@@ -2,17 +2,13 @@ package com.example.Typography_course_work.model;
 
 import jakarta.persistence.*;
 import jdk.jfr.Enabled;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "product")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {

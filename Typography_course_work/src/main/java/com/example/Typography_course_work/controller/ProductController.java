@@ -1,6 +1,7 @@
 package com.example.Typography_course_work.controller;
 
-import com.example.Typography_course_work.dto.productDTO.AllProductResponseDto;
+import com.example.Typography_course_work.dto.productDTO.get.AllProductResponseDto;
+import com.example.Typography_course_work.dto.productDTO.post.ProductRequestDto;
 import com.example.Typography_course_work.service.TypographyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,8 @@ public class ProductController {
 
 
     @PostMapping()
-    public ResponseEntity<Void> postProduct() {
+    public ResponseEntity<Void> postProduct(@RequestBody ProductRequestDto product) {
+        service.saveProduct(product);
         return ResponseEntity.ok().build();
     }
 }
