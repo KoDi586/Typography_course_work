@@ -14,9 +14,9 @@ const PHeader = () => {
                         <Nav className="me-auto">
                             <Nav.Link as={Link} to="/">Главная</Nav.Link>
                             <Nav.Link as={Link} to="/neworder">Оформление заказа</Nav.Link>
-                            <Nav.Link as={Link} to="/">Поставщики</Nav.Link>
+                            <Nav.Link as={Link} to="/providers">Поставщики</Nav.Link>
                             <NavDropdown title='Товары'>
-                                <NavDropdown.Item as={Link} to="/">Добавить товар</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/productadd">Добавить товар</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to="/">Все товары  </NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown title='Отчеты' >

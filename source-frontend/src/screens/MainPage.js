@@ -8,7 +8,7 @@ const MainPage = () => {
         <> 
             <PHeader/>
             <Container>
-
+                
             </Container>
             <PFooter/>
         </>

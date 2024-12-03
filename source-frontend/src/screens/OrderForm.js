@@ -10,190 +10,25 @@ const OrderForm = () => {
     const [product, setProduct] = useState([])
     const [order, setOrder] = useState([])
 
-
-    // const order = [{
-    //     orderId: 1,
-    //     client: {
-    //        name: "dsadas",
-    //        secondName: "asddas",
-    //        email: "strindasdasg",
-    //        phone: "striadssdang",
-    //        card: "strdasdasing"
-    //      },
-    //      orderItems: [
-    //        {
-    //          product: "stsdadsaring",
-    //          count: 1
-    //        },
-    //     {
-    //         product: "stridasdsang",
-    //           count: 2
-    //         }
-    //      ],
-    //      totalPrice: 1000.99
-    //    }, {
-    //     orderId: 2,
-    //     client: {
-    //        name: "dsadas",
-    //        secondName: "asddas",
-    //        email: "strindasdasg",
-    //        phone: "striadssdang",
-    //        card: "strdasdasing"
-    //      },
-    //      orderItems: [
-    //        {
-    //          product: "stsdadsaring",
-    //          count: 1
-    //        },
-    //     {
-    //         product: "stridasdsang",
-    //           count: 2
-    //         }
-    //      ],
-    //      totalPrice: 1000.99
-    //    }, {
-    //     orderId: 2,
-    //     client: {
-    //        name: "dsadas",
-    //        secondName: "asddas",
-    //        email: "strindasdasg",
-    //        phone: "striadssdang",
-    //        card: "strdasdasing"
-    //      },
-    //      orderItems: [
-    //        {
-    //          product: "stsdadsaring",
-    //          count: 1
-    //        },
-    //     {
-    //         product: "stridasdsang",
-    //           count: 2
-    //         }
-    //      ],
-    //      totalPrice: 1000.99
-    //    }, {
-    //     orderId: 2,
-    //     client: {
-    //        name: "dsadas",
-    //        secondName: "asddas",
-    //        email: "strindasdasg",
-    //        phone: "striadssdang",
-    //        card: "strdasdasing"
-    //      },
-    //      orderItems: [
-    //        {
-    //          product: "stsdadsaring",
-    //          count: 1
-    //        },
-    //     {
-    //         product: "stridasdsang",
-    //           count: 2
-    //         }
-    //      ],
-    //      totalPrice: 1000.99
-    //    }, {
-    //     orderId: 2,
-    //     client: {
-    //        name: "dsadas",
-    //        secondName: "asddas",
-    //        email: "strindasdasg",
-    //        phone: "striadssdang",
-    //        card: "strdasdasing"
-    //      },
-    //      orderItems: [
-    //        {
-    //          product: "stsdadsaring",
-    //          count: 1
-    //        },
-    //     {
-    //         product: "stridasdsang",
-    //           count: 2
-    //         }
-    //      ],
-    //      totalPrice: 1000.99
-    //    }, {
-    //     orderId: 2,
-    //     client: {
-    //        name: "dsadas",
-    //        secondName: "asddas",
-    //        email: "strindasdasg",
-    //        phone: "striadssdang",
-    //        card: "strdasdasing"
-    //      },
-    //      orderItems: [
-    //        {
-    //          product: "stsdadsaring",
-    //          count: 1
-    //        },
-    //     {
-    //         product: "stridasdsang",
-    //           count: 2
-    //         }
-    //      ],
-    //      totalPrice: 1000.99
-    //    }, {
-    //     orderId: 2,
-    //     client: {
-    //        name: "dsadas",
-    //        secondName: "asddas",
-    //        email: "strindasdasg",
-    //        phone: "striadssdang",
-    //        card: "strdasdasing"
-    //      },
-    //      orderItems: [
-    //        {
-    //          product: "stsdadsaring",
-    //          count: 1
-    //        },
-    //     {
-    //         product: "stridasdsang",
-    //           count: 2
-    //         }
-    //      ],
-    //      totalPrice: 1000.99
-    //    }, {
-    //     orderId: 2,
-    //     client: {
-    //        name: "dsadas",
-    //        secondName: "asddas",
-    //        email: "strindasdasg",
-    //        phone: "striadssdang",
-    //        card: "strdasdasing"
-    //      },
-    //      orderItems: [
-    //        {
-    //          product: "stsdadsaring",
-    //          count: 1
-    //        },
-    //     {
-    //         product: "stridasdsang",
-    //           count: 2
-    //         }
-    //      ],
-    //      totalPrice: 1000.99
-    //    }
-    // ];
-
-
     useEffect(
         () => {
-            axios.get("http://192.168.0.201:8089/api/product/all").then(response => {
+            axios.get("http://192.168.12.78:8089/api/product/all").then(response => {
                 setProduct(response.data.children)
             }).catch(error => {
                 console.log(error);
             });
-        }, 
-        []
+        }, []
     )
-    // useEffect(
-    //     () => {
-    //         axios.get("http://192.168.0.201:8089/api/order/all").then(response => {
-    //             setOrder(response.data.children)
-    //         }).catch(error => {
-    //             console.log(error);
-    //         });
-    //     }
-    // )
+
+    useEffect(
+        () => {
+            axios.get("http://192.168.12.78:8089/api/order/all").then(response => {
+                setOrder(response.data.children)
+            }).catch(error => {
+                console.log(error);
+            });
+        }, []
+    )
 
     console.info(product)
 
@@ -263,8 +98,10 @@ const OrderForm = () => {
         };
 
         try {
-            const response = await axios.post('http://192.168.0.201:8089/api/order', payload);
+            const response = await axios.post('http://192.168.12.78:8089/api/order', payload);
             setResponseMessage(`Успех! Ответ: ${response.data.message}`);
+
+            window.location.reload();
         } catch (error) {
             if (error.response) {
                 setResponseMessage(`Ошибка: ${error.response.data.message}`);
@@ -280,6 +117,7 @@ const OrderForm = () => {
         <>
             <PHeader/>
             <Container style={{marginTop: '75px', marginBottom: '25px'}} >
+                <h1 style={{textAlign: 'center'}}>Оформление заказа</h1>
                 <Form onSubmit={handleSubmit} style={{marginBottom: '25px'}}>
                     <Form.Group>
                         <Form.Label>Имя</Form.Label>
@@ -345,25 +183,23 @@ const OrderForm = () => {
                     </thead>
                     <tbody>
                         {order.map((orders) => (
-                            <>
                                 <tr> 
-                                    <td>{orders.orderId}</td>
-                                    <td>{orders.client.name}</td>
-                                    <td>{orders.client.secondName}</td>
-                                    <td>{orders.client.email}</td>
-                                    <td>{orders.client.phone}</td>
-                                    <td>{orders.client.card}</td>
+                                    <td style={{textAlign: 'center'}}>{orders.orderId}</td>
+                                    <td style={{textAlign: 'center'}}>{orders.client.name}</td>
+                                    <td style={{textAlign: 'center'}}>{orders.client.secondName}</td>
+                                    <td style={{textAlign: 'center'}}>{orders.client.email}</td>
+                                    <td style={{textAlign: 'center'}}>{orders.client.phone}</td>
+                                    <td style={{textAlign: 'center'}}>{orders.client.card}</td>
                                     <td>
                                         {orders.orderItems.map((orderItem) => (
                                             <Card>
-                                                <CardHeader>{orderItem.product}</CardHeader>
-                                                <CardBody style={{textAlign: 'center'}}>{orderItem.count}</CardBody>
+                                                <CardHeader>{orderItem.productName}</CardHeader>
+                                                <CardBody style={{textAlign: 'center'}}>{orderItem.count} шт.</CardBody>
                                             </Card>
                                         ))}
                                     </td>
                                     <td>{orders.totalPrice}</td>
                                 </tr>
-                            </>
                         ))}
                     </tbody>
                 </Table>
