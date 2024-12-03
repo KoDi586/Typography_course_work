@@ -8,6 +8,7 @@ import MainPage from "./screens/MainPage"
 import OrderForm from './screens/OrderForm';
 import Providers from './screens/Providers';
 import ProductAdd from './screens/ProductAdd';
+import ProductChange from './screens/ProductChange';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,6 +19,7 @@ root.render(
         <Route path='/neworder' element={<OrderForm/>}/>
         <Route path='/providers' element={<Providers/>}/>
         <Route path='/productadd' element={<ProductAdd/>}/>
+        <Route path='/productchange' element={<ProductChange/>}/>
       </Routes>
     </Router>
   </React.StrictMode>

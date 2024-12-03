@@ -98,20 +98,20 @@ const ProductAdd = () => {
                 </Form>
                 <Table style={{marginTop: '15px'}}>
                     <thead>
-                        <tr>
-                            <th  style={{textAlign: 'center'}}>№</th>
-                            <th  style={{textAlign: 'center'}}>Название товара</th>
-                            <th  style={{textAlign: 'center'}}>Материалы</th>
-                            <th  style={{textAlign: 'center'}}>Стоимость</th>
+                        <tr style={{textAlign: 'center'}}>
+                            <th>№</th>
+                            <th>Название товара</th>
+                            <th>Материалы</th>
+                            <th>Стоимость</th>
                         </tr>
                     </thead>
                     <tbody>
                         {product.map((products) => (
-                            <tr>
-                                <td  style={{textAlign: 'center'}}>{products.id}</td>
-                                <td  style={{textAlign: 'center'}}>{products.name}</td>
-                                <td  style={{textAlign: 'center'}}>{products.materials}</td>
-                                <td  style={{textAlign: 'center'}}>{products.price} р.</td>
+                            <tr style={{textAlign: 'center'}}>
+                                <td>{products.id}</td>
+                                <td>{products.name}</td>
+                                <td>{products.materials}</td>
+                                <td>{products.price} р.</td>
                             </tr>
                         ))}
                     </tbody>
