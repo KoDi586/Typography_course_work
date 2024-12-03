@@ -1,6 +1,7 @@
 package com.example.Typography_course_work.controller;
 
 import com.example.Typography_course_work.dto.productDTO.get.AllProductResponseDto;
+import com.example.Typography_course_work.dto.productDTO.get.ProductResponseDto;
 import com.example.Typography_course_work.dto.productDTO.post.ProductRequestDto;
 import com.example.Typography_course_work.service.TypographyService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,8 @@ public class ProductController {
 
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Void> getById(Long productId) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ProductResponseDto> getById(@RequestParam Long productId) {
+        return ResponseEntity.ok(service.getProductByProductId(productId));
     }
 
 

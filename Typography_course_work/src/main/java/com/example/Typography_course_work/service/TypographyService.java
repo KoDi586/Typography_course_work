@@ -7,13 +7,12 @@ import com.example.Typography_course_work.dto.OrderDTO.get.AllOrderResponseDto;
 import com.example.Typography_course_work.dto.OrderDTO.get.ClientResponseDto;
 import com.example.Typography_course_work.dto.OrderDTO.get.OrderItemResponseDto;
 import com.example.Typography_course_work.dto.OrderDTO.get.OrderResponseDto;
+import com.example.Typography_course_work.dto.materialDto.get.MaterialForGetAllResponseDto;
+import com.example.Typography_course_work.dto.materialDto.get.MaterialTwoFieldResponseDto;
 import com.example.Typography_course_work.dto.productDTO.get.AllProductResponseDto;
 import com.example.Typography_course_work.dto.productDTO.get.ProductResponseDto;
 import com.example.Typography_course_work.dto.productDTO.post.ProductRequestDto;
-import com.example.Typography_course_work.model.Client;
-import com.example.Typography_course_work.model.Order;
-import com.example.Typography_course_work.model.OrderItem;
-import com.example.Typography_course_work.model.Product;
+import com.example.Typography_course_work.model.*;
 import com.example.Typography_course_work.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,9 +43,17 @@ public class TypographyService {
 
     private Order convertOrderDtoToOrderModel(CreateOrderRequestDto createOrderRequestDto) {
         Order orderModel = new Order();
-//        orderRepository.save(orderModel);
+        try {
+            orderModel = orderRepository.save(orderModel);
+        } catch (Exception e) {
+            log.warn("error save in convertOrderDtoToOrderModel");
+        }
         Long clientId = convertClientDtoToClientModel(createOrderRequestDto.getClient()).getId();
-        List<Integer> orderItemListIds = convertOrderItemsDtoToOrderItemModel(createOrderRequestDto.getOrderItems());
+        if (orderModel.getId() == null) {
+            log.warn("orderModel without id");
+//            throw new RuntimeException();
+        }
+        List<Integer> orderItemListIds = convertOrderItemsDtoToOrderItemModel(createOrderRequestDto.getOrderItems(), orderModel.getId());
         orderModel.setClientId(clientId);
 //        for (OrderItem orderItem : orderItemListIds) {
 //
@@ -65,15 +72,15 @@ public class TypographyService {
 //        return orderModel;
     }
 
-    private List<Integer> convertOrderItemsDtoToOrderItemModel(List<OrderItemRequestDto> orderItems) {
+    private List<Integer> convertOrderItemsDtoToOrderItemModel(List<OrderItemRequestDto> orderItems, Long orderId) {
         List<Integer> result = new ArrayList<>();
         for (OrderItemRequestDto orderItemRequestDto : orderItems) {
-            result.add(convertOrderItemDtoToOrderItemModel(orderItemRequestDto).getId().intValue());
+            result.add(convertOrderItemDtoToOrderItemModel(orderItemRequestDto, orderId).getId().intValue());
         }
         return result;
     }
 
-    private OrderItem convertOrderItemDtoToOrderItemModel(OrderItemRequestDto dto) {
+    private OrderItem convertOrderItemDtoToOrderItemModel(OrderItemRequestDto dto, Long orderId) {
         OrderItem orderItem = new OrderItem();
         orderItem.setCount(dto.getCount());
         Long productId = null;
@@ -83,6 +90,7 @@ public class TypographyService {
             log.warn("error in convertOrderItemDtoToOrderItemModel repository findById");
         }
         orderItem.setProductId(productId);
+        orderItem.setOrderId(orderId);
         OrderItem save = null;
         try {
             save = orderItemRepository.save(orderItem);
@@ -133,18 +141,45 @@ public class TypographyService {
         List<ProductResponseDto> children = new ArrayList<>();
         for (Product product : allProduct) {
             children.add(
-                    new ProductResponseDto(
-                            product.getId().toString(),
-                            product.getTitle(),
-                            product.getPrice()
-                    )
+                    convertProductModelToProductResponseDto(product)
             );
         }
         return children;
     }
 
+    private ProductResponseDto convertProductModelToProductResponseDto(Product product) {
+        String materials = null;
+        try {
+            materials = convertMaterialsIdsToStringOfMaterials(product.getMaterials());
+        } catch (Exception e) {
+            log.warn("error in convertMaterialsIdsToStringOfMaterials");
+        }
+        return new ProductResponseDto(
+                product.getId().toString(),
+                product.getTitle(),
+                product.getPrice(),
+                materials
+        );
+    }
+
+    private String convertMaterialsIdsToStringOfMaterials(List<Integer> materials) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Integer materialId : materials) {
+            try {
+                String title = materialRepository.findById(materialId.longValue()).get().getTitle();
+                stringBuilder.append(title).append(", ");
+            } catch (Exception e) {
+                log.warn("error in materialRepository.findById");
+            }
+        }
+        if (stringBuilder.length() > 2) {
+            stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
+        }
+        return stringBuilder.toString();
+    }
+
     public AllOrderResponseDto getAllOrders() {
-        int totalPrice = 0;
+//        int totalPrice = 0;
 //        List<OrderResponseDto> children = new ArrayList<>();
         List<Order> orderList = null;
         try {
@@ -157,12 +192,17 @@ public class TypographyService {
         AllOrderResponseDto allOrderResponseDto = new AllOrderResponseDto();
         List<OrderResponseDto> orderResponseDtoList = new ArrayList<>();
         for (Order order : orderList) {
+            int totalPrice = 0;
             Client client = clientRepository.findById(order.getClientId()).get();
+//            log.info("client is {}", client.toString());
             List<OrderItemResponseDto> orderItemResponseDtoList = new ArrayList<>();
             List<Integer> orderItemsIds = order.getOrderItems();
             for (Integer orderItemId : orderItemsIds) {
+//                log.info("orderItemId is {}", orderItemId);
                 OrderItem orderItem = orderItemRepository.findById(orderItemId.longValue()).get();
+//                log.info("orderItem is {}", orderItem);
                 Product product = productRepository.findById(orderItem.getProductId()).get();
+//                log.info("product is {}", product);
                 Integer count = orderItem.getCount();
                 orderItemResponseDtoList.add(
                         new OrderItemResponseDto(product.getTitle(),
@@ -171,6 +211,7 @@ public class TypographyService {
                 totalPrice += product.getPrice() * count;
             }
             orderResponseDtoList.add(new OrderResponseDto(
+                    order.getId(),
                     convertClientModelToClientDto(client),
                     orderItemResponseDtoList,
                     totalPrice
@@ -259,5 +300,44 @@ public class TypographyService {
 
         }
         return result;
+    }
+
+    public ProductResponseDto getProductByProductId(Long productId) {
+        Product productModel;
+        try {
+             productModel = productRepository.findById(productId).get();
+        } catch (Exception e) {
+            log.warn("error in getProductByProductId repository findById id = {}", productId);
+            return null;
+        }
+
+        return convertProductModelToProductResponseDto(productModel);
+    }
+
+    public MaterialForGetAllResponseDto getAllMaterialsDtos() {
+
+        List<Material> materialModelList = null;
+        try {
+            materialModelList = materialRepository.findAll();
+        } catch (Exception e) {
+            materialModelList = new ArrayList<>();
+        }
+        List<MaterialTwoFieldResponseDto> children = convertMaterialModelListToMaterialDtoList(materialModelList);
+        return new MaterialForGetAllResponseDto(children);
+    }
+
+    private List<MaterialTwoFieldResponseDto> convertMaterialModelListToMaterialDtoList(List<Material> materialModelList) {
+        List<MaterialTwoFieldResponseDto> result = new ArrayList<>();
+        for (Material material : materialModelList) {
+            result.add(convertMaterialToMaterialDto(material));
+        }
+        return result;
+    }
+
+    private MaterialTwoFieldResponseDto convertMaterialToMaterialDto(Material material) {
+        return new MaterialTwoFieldResponseDto(
+                material.getTitle(),
+                material.getPrice()
+        );
     }
 }

@@ -6,8 +6,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "order_item")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderItem {

@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponseDto {
-
+    private Long orderId;
     private ClientResponseDto client;
     private List<OrderItemResponseDto> orderItems;
     private Integer totalPrice;
