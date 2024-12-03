@@ -12,6 +12,8 @@ import com.example.Typography_course_work.dto.materialDto.get.MaterialTwoFieldRe
 import com.example.Typography_course_work.dto.productDTO.get.AllProductResponseDto;
 import com.example.Typography_course_work.dto.productDTO.get.ProductResponseDto;
 import com.example.Typography_course_work.dto.productDTO.post.ProductRequestDto;
+import com.example.Typography_course_work.dto.provider.ProviderAllResponseDto;
+import com.example.Typography_course_work.dto.provider.ProviderResponseDto;
 import com.example.Typography_course_work.model.*;
 import com.example.Typography_course_work.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class TypographyService {
     private final OrderItemRepository orderItemRepository;
     private final ClientRepository clientRepository;
     private final MaterialRepository materialRepository;
+    private final ProviderRepository providerRepository;
 
     public void create(CreateOrderRequestDto createOrderRequestDto) {
         log.info(createOrderRequestDto.toString());
@@ -338,6 +341,46 @@ public class TypographyService {
         return new MaterialTwoFieldResponseDto(
                 material.getTitle(),
                 material.getPrice()
+        );
+    }
+
+    public ProviderAllResponseDto getAllProviders() {
+        List<Provider> allProviders = null;
+        try {
+            allProviders = providerRepository.findAll();
+        } catch (Exception e) {
+            log.warn("error in find all provider");
+        }
+        List<ProviderResponseDto> children = convertAllProvidersToAllProviderDto(allProviders);
+        return new ProviderAllResponseDto(children);
+    }
+
+    private List<ProviderResponseDto> convertAllProvidersToAllProviderDto(List<Provider> allProviders) {
+        List<ProviderResponseDto> listDtos = new ArrayList<>();
+        for (Provider provider : allProviders) {
+            listDtos.add(convertProviderDtoProviderDto(provider));
+        }
+        return listDtos;
+    }
+
+    private ProviderResponseDto convertProviderDtoProviderDto(Provider provider) {
+        Material material = null;
+        try {
+            material = materialRepository.findById(provider.getMaterialId()).get();
+        } catch (Exception e) {
+            log.warn("error in findById material");
+        }
+        String materialName;
+        if (material == null) {
+            materialName = " ";
+        } else {
+            materialName = material.getTitle();
+        }
+        return new ProviderResponseDto(
+                provider.getId(),
+                provider.getName(),
+                materialName,
+                provider.getContactInfo()
         );
     }
 }

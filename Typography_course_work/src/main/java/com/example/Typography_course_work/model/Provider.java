@@ -15,10 +15,13 @@ public class Provider {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column()
     private String name;
 
-    @Column(name = "material_id", nullable = false)
+    @Column(name = "material_id")
     private Long materialId;
+
+    @Column(name = "contact_info")
+    private String contactInfo;
 }
 

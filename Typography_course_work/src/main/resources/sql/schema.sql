@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS material (
 CREATE TABLE IF NOT EXISTS provider (
     id bigint PRIMARY KEY,
     name VARCHAR(255),
-    material_id bigint -- Один материал на одного поставщика
---    FOREIGN KEY (material_id) REFERENCES material (id) ON DELETE CASCADE
+    material_id bigint, -- Один материал на одного поставщика
+    contact_info varchar(255)
 );
 
 -- Создание таблицы order
@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS "order" (
     id bigint PRIMARY KEY,
     order_items integer[],-- Один клиент в заказе
     client_id bigint
---    FOREIGN KEY (client_id) REFERENCES client (id) ON DELETE CASCADE
 );
 
 
