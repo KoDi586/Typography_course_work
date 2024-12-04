@@ -12,6 +12,9 @@ import ProductChange from './screens/ProductChange';
 import ReportMaterials from './screens/ReportMaterials';
 import ReportMoney from './screens/ReortMoney';
 import AllMaterials from './screens/AllMaterials';
+import ProductAll from './screens/ProductAll';
+import OrderAll from './screens/OrderAll';
+import MaterialsByOrder from './screens/MaterialsByOrder';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -26,6 +29,9 @@ root.render(
         <Route path='/reportmaterials' element={<ReportMaterials/>}/>
         <Route path='/reportmoney' element={<ReportMoney/>}/>
         <Route path='/allmaterials' element={<AllMaterials/>}/>
+        <Route path='/allproduct' element={<ProductAll/>}/>
+        <Route path='/allorder' element={<OrderAll/>}/>
+        <Route path='/materialsbyorder' element={<MaterialsByOrder/>}/>
       </Routes>
     </Router>
   </React.StrictMode>

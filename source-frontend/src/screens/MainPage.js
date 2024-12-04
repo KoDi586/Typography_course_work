@@ -17,9 +17,9 @@ const MainPage = () => {
                 <Button variant='dark' as={Link} to="/reportmaterials">Остатки и обороты материалов</Button>
                 <Button variant='dark' as={Link} to="/reportmoney">Движения денежных средств</Button>
                 <Button variant='dark' as={Link} to="/allmaterials">Прайс лист на материалы</Button>
-                <Button variant='dark'>Выполненные заказы</Button>
-                <Button variant='dark'>Расход материалов по заказам</Button>
-                <Button variant='dark'>Прайс лист на продукцию</Button>
+                <Button variant='dark' as={Link} to="/allorder">Выполненные заказы</Button>
+                <Button variant='dark' as={Link} to="/materialsbyorder">Расход материалов по заказам</Button>
+                <Button variant='dark' as={Link} to="/allproduct">Прайс лист на продукцию</Button>
             </Container>
             <PFooter/>
         </>
