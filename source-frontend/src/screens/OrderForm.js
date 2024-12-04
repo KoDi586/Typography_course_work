@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import axios from 'axios'
 import PFooter from "../components/PFooter";
+import ip from "../ApiConfig";
 
 const OrderForm = () => {
 
@@ -12,7 +13,7 @@ const OrderForm = () => {
 
     useEffect(
         () => {
-            axios.get("http://192.168.12.78:8089/api/product/all").then(response => {
+            axios.get("http://"+ ip +":8089/api/product/all").then(response => {
                 setProduct(response.data.children)
             }).catch(error => {
                 console.log(error);
@@ -22,7 +23,7 @@ const OrderForm = () => {
 
     useEffect(
         () => {
-            axios.get("http://192.168.12.78:8089/api/order/all").then(response => {
+            axios.get("http://"+ ip +":8089/api/order/all").then(response => {
                 setOrder(response.data.children)
             }).catch(error => {
                 console.log(error);
@@ -98,7 +99,7 @@ const OrderForm = () => {
         };
 
         try {
-            const response = await axios.post('http://192.168.12.78:8089/api/order', payload);
+            const response = await axios.post("http://"+ ip +":8089/api/order", payload);
             setResponseMessage(`Успех! Ответ: ${response.data.message}`);
 
             window.location.reload();

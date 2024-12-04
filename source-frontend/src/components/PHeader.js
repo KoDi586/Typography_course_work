@@ -20,7 +20,7 @@ const PHeader = () => {
                                 <NavDropdown.Item as={Link} to="/productchange">Все товары  </NavDropdown.Item>
                             </NavDropdown>
                             <NavDropdown title='Отчеты' >
-                                <NavDropdown.Item as={Link} to="/">Отчет 1</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/reportmaterials">Остатки и обороты материалов</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to="/">Отчет 2</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>

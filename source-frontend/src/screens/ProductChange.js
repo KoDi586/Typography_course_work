@@ -5,13 +5,15 @@ import PFooter from "../components/PFooter"
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import ip from "../ApiConfig";
+
 const ProductChange = () => {
 
     const [product, setProduct] = useState([])
 
     useEffect(
         () => {
-            axios.get("http://192.168.12.78:8089/api/product/all").then(response => {
+            axios.get("http://"+ ip +":8089/api/product/all").then(response => {
                 setProduct(response.data.children)
             }).catch(error => {
                 console.log(error);
@@ -57,17 +59,18 @@ const ProductChange = () => {
         // Формируем данные для отправки в нужном формате
         const payload = {
             title: editedProduct.name,
-            materials: editedProduct.materials, // предполагаем, что materials уже массив
+            materials: editedProduct.materials.split(', '), // предполагаем, что materials уже массив
             price_with_materials: Number(editedProduct.price), // преобразуем в число
-            id: editedProduct.id
+            id: Number(editedProduct.id)
         };
 
         try {
-            const response = await axios.post('http://192.168.12.78:8089/api/product', payload);
+            const response = await axios.post("http://"+ ip +":8089/api/product", payload);
 
             if (response.status === 200) {
                 // Обработка успешного ответа
                 console.log('Product updated successfully');
+                window.location.reload();
             }
         } catch (error) {
             console.error('Error updating product:', error);

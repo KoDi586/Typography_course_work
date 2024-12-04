@@ -4,6 +4,7 @@ import PFooter from "../components/PFooter";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import ip from "../ApiConfig";
 
 const Providers = () => {
 
@@ -11,7 +12,7 @@ const Providers = () => {
 
     useEffect(
         () => {
-            axios.get("http://192.168.12.78:8089/api/provider/all").then(response => {
+            axios.get("http://"+ ip +":8089/api/provider/all").then(response => {
                 setProviders(response.data.children)
             }).catch(error => {
                 console.log(error);
@@ -19,20 +20,20 @@ const Providers = () => {
         }, []
     )
 
-    const prov = [
-        {
-          "id": 1,
-          "name": "Поставщик 1",
-          "material": "Материал 1",
-          "contactInfo": "Контактная информация 1"
-        },
-        {
-          "id": 2,
-          "name": "Поставщик 2",
-          "material": "Материал 2",
-          "contactInfo": "Контактная информация 2"
-        }
-      ]
+    // const prov = [
+    //     {
+    //       "id": 1,
+    //       "name": "Поставщик 1",
+    //       "material": "Материал 1",
+    //       "contactInfo": "Контактная информация 1"
+    //     },
+    //     {
+    //       "id": 2,
+    //       "name": "Поставщик 2",
+    //       "material": "Материал 2",
+    //       "contactInfo": "Контактная информация 2"
+    //     }
+    //   ]
 
     return (
         <>
@@ -51,7 +52,7 @@ const Providers = () => {
                     </thead>
                     <tbody>
                         {/* Поменять на providers - prov */}
-                        {prov.map((provider) => (
+                        {providers.map((provider) => (
                             <tr style={{textAlign: 'center'}}>
                                 <td>{provider.id}</td>
                                 <td>{provider.name}</td>

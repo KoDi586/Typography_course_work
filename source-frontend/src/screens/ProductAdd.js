@@ -3,7 +3,7 @@ import PHeader from "../components/PHeader"
 import PFooter from "../components/PFooter"
 
 import { useEffect, useState } from "react";
-
+import ip from "../ApiConfig";
 import axios from 'axios'
 
 const ProductAdd = () => {
@@ -13,7 +13,7 @@ const ProductAdd = () => {
 
     useEffect(
         () => {
-            axios.get("http://192.168.12.78:8089/api/product/all").then(response => {
+            axios.get("http://"+ ip +":8089/api/product/all").then(response => {
                 setProduct(response.data.children)
             }).catch(error => {
                 console.log(error);
@@ -23,7 +23,7 @@ const ProductAdd = () => {
 
     useEffect(
         () => {
-            axios.get("http://192.168.12.78:8089/api/material/all").then(response => {
+            axios.get("http://"+ ip +":8089/api/material/all").then(response => {
                 setMaterials(response.data.children)
             }).catch(error => {
                 console.log(error);
@@ -62,7 +62,7 @@ const ProductAdd = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-            const response = await axios.post('http://192.168.12.78:8089/api/product', formData);
+            const response = await axios.post("http://"+ ip +":8089/api/product", formData);
 
             window.location.reload();
     };
