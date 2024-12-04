@@ -38,17 +38,16 @@ const ReportMaterials = () => {
                         {reportMaterials.map((repMat) => (
                             <tr>
                                 <td>{repMat.name}</td>
-                                <td>{repMat.countInWarehouse}</td>
-                                <td>{repMat.countOfSpent}</td>
-                                <td>{repMat.countOfBought}</td>
-                                <td>{repMat.totalSpentMoney}</td>
+                                <td>{repMat.countInWarehouse} шт.</td>
+                                <td>{repMat.countOfSpent} шт.</td>
+                                <td>{repMat.countOfBought} шт.</td>
+                                <td>{repMat.totalSpentMoney} р.</td>
                             </tr>
                         ))} 
                     </tbody>
                 </Table>
                 
             </Container>
-            <PFooter/>
         </>
     )
 }

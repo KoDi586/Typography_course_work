@@ -158,7 +158,7 @@ const OrderForm = () => {
                                         disabled={!formData.orderItems.some(item => item.product === product.id)}
                                         
                                     />
-                                    <Form.Label>Цена за еденицу товара: {product.price}</Form.Label>
+                                    <Form.Label>Цена за еденицу товара: {product.price} р.</Form.Label>
                                 </Card>
                             ))}
                         </Container>
@@ -199,13 +199,12 @@ const OrderForm = () => {
                                             </Card>
                                         ))}
                                     </td>
-                                    <td>{orders.totalPrice}</td>
+                                    <td  style={{textAlign: 'center'}}>{orders.totalPrice} р.</td>
                                 </tr>
                         ))}
                     </tbody>
                 </Table>
             </Container>
-            <PFooter/>
         </>
     )
 };

@@ -51,7 +51,6 @@ const Providers = () => {
                         
                     </thead>
                     <tbody>
-                        {/* Поменять на providers - prov */}
                         {providers.map((provider) => (
                             <tr style={{textAlign: 'center'}}>
                                 <td>{provider.id}</td>
@@ -63,7 +62,6 @@ const Providers = () => {
                     </tbody>
                 </Table>
             </Container>
-            <PFooter/>
         </>
         
     )

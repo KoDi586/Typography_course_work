@@ -10,6 +10,8 @@ import Providers from './screens/Providers';
 import ProductAdd from './screens/ProductAdd';
 import ProductChange from './screens/ProductChange';
 import ReportMaterials from './screens/ReportMaterials';
+import ReportMoney from './screens/ReortMoney';
+import AllMaterials from './screens/AllMaterials';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -22,6 +24,8 @@ root.render(
         <Route path='/productadd' element={<ProductAdd/>}/>
         <Route path='/productchange' element={<ProductChange/>}/>
         <Route path='/reportmaterials' element={<ReportMaterials/>}/>
+        <Route path='/reportmoney' element={<ReportMoney/>}/>
+        <Route path='/allmaterials' element={<AllMaterials/>}/>
       </Routes>
     </Router>
   </React.StrictMode>

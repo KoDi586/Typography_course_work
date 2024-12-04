@@ -92,7 +92,7 @@ const ProductAdd = () => {
                     </Form.Group>
                     <Container  className="d-flex flex-wrap justify-content-center" style={{marginTop: '25px'}}>
                         <Button variant="dark" type="submit">
-                            Оформить заказ
+                            Добавить товар
                         </Button>
                     </Container>
                 </Form>
@@ -117,7 +117,6 @@ const ProductAdd = () => {
                     </tbody>
                 </Table>
             </Container>
-            <PFooter/>
         </>
     )
 }

@@ -142,7 +142,6 @@ const ProductChange = () => {
                     </tbody>
                 </Table>
             </Container>
-            <PFooter/>
         </>
     );
 };
