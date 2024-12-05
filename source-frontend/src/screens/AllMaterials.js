@@ -23,7 +23,7 @@ const AllMaterials = () => {
         <>
             <PHeader/>
             <Container style={{marginTop: '75px'}}>
-                <h1 style={{textAlign: 'center'}}>Поставщики</h1>
+                <h1 style={{textAlign: 'center'}}>Прайс лист на материалы</h1>
                 <Table>
                     <thead>
                         <tr style={{textAlign: 'center'}}>
