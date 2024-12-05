@@ -88,14 +88,39 @@ public class TypographyService {
         return result;
     }
 
+    /**
+     *
+     * method for work with order item request dto
+     * @param dto
+     * @param orderId
+     * @return
+     */
     private OrderItem convertOrderItemDtoToOrderItemModel(OrderItemRequestDto dto, Long orderId) {
         OrderItem orderItem = new OrderItem();
-        orderItem.setCount(dto.getCount());
+        Integer orderItemCount = dto.getCount();   // count for multiply for delete from warehouse
+        orderItem.setCount(orderItemCount);
         Long productId = null;
+        List<Integer> materials = null;
         try {
-            productId = productRepository.findById(Long.parseLong(dto.getProduct())).get().getId();
+            Product product = productRepository.findById(Long.parseLong(dto.getProduct())).get();
+            productId = product.getId();
+            materials = product.getMaterials();
         } catch (NumberFormatException e) {
             log.warn("error in convertOrderItemDtoToOrderItemModel repository findById");
+        }
+        if (materials != null) {
+            for (Integer materialId : materials) {
+                MaterialsTurnover materialsTurnover = new MaterialsTurnover();
+                materialsTurnover.setCount(orderItemCount);
+                materialsTurnover.setMaterialId(materialId.longValue());
+                try {
+                    materialTurnoverRepository.save(materialsTurnover);
+                } catch (Exception e) {
+                    log.warn("error in save material turnover");
+                }
+                materialSpentCountById(materialId, orderItemCount);
+                log.info("был потрачен материал с id{}\n в кол-ве {}", materialId, orderItemCount);
+            }
         }
         orderItem.setProductId(productId);
         orderItem.setOrderId(orderId);
@@ -106,7 +131,20 @@ public class TypographyService {
             log.warn("error in convertOrderItemDtoToOrderItemModel repository save");
         }
         return save;
-//        return orderItem;
+    }
+
+    private void materialSpentCountById(Integer materialId, Integer materialCount) {
+        Material material = null;
+        try {
+            material = materialRepository.findById(materialId.longValue()).get();
+        } catch (Exception e) {
+            log.warn("error in find by id in material");
+        }
+        if (material != null) {
+            material.setCount(material.getCount() - materialCount);  // тратим материалы
+            material.setCountOfSpent(material.getCountOfSpent() + materialCount);  // add spend count
+        }
+
     }
 
     private Client convertClientDtoToClientModel(ClientRequestDto dto) {
