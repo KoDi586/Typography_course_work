@@ -1,3 +1,3 @@
-const ip = '26.185.27.223'
+const ip = 'localhost'
 
 export default ip;
