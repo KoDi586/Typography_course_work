@@ -14,15 +14,19 @@ import com.example.Typography_course_work.dto.productDTO.get.ProductResponseDto;
 import com.example.Typography_course_work.dto.productDTO.post.ProductRequestDto;
 import com.example.Typography_course_work.dto.provider.ProviderAllResponseDto;
 import com.example.Typography_course_work.dto.provider.ProviderResponseDto;
+import com.example.Typography_course_work.dto.reports.materialByOrder.MaterialByOrderChildrenResponseDto;
+import com.example.Typography_course_work.dto.reports.materialByOrder.MaterialByOrderResponseDto;
+import com.example.Typography_course_work.dto.reports.materials.MaterialReportAndTurnoverResponseDto;
+import com.example.Typography_course_work.dto.reports.materials.MaterialReportResponseDto;
+import com.example.Typography_course_work.dto.reports.money.MoveMoneyResponseDto;
+import com.example.Typography_course_work.dto.reports.money.MoveMoneyTotalResponseDto;
 import com.example.Typography_course_work.model.*;
 import com.example.Typography_course_work.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +38,7 @@ public class TypographyService {
     private final ClientRepository clientRepository;
     private final MaterialRepository materialRepository;
     private final ProviderRepository providerRepository;
+    private final MaterialTurnoverRepository materialTurnoverRepository;
 
     public void create(CreateOrderRequestDto createOrderRequestDto) {
         log.info(createOrderRequestDto.toString());
@@ -133,6 +138,7 @@ public class TypographyService {
         List<Product> allProduct = null;
         try {
             allProduct = productRepository.findAll();
+            Collections.reverse(allProduct);
         } catch (Exception e) {
             log.warn("error in getAllProducts because repository find all");
         }
@@ -382,5 +388,171 @@ public class TypographyService {
                 materialName,
                 provider.getContactInfo()
         );
+    }
+
+    public MaterialReportAndTurnoverResponseDto materialReport() {
+        List<MaterialReportResponseDto> children = getMaterialsReportsList();
+        return new MaterialReportAndTurnoverResponseDto(children);
+    }
+
+    private List<MaterialReportResponseDto> getMaterialsReportsList() {
+        List<MaterialReportResponseDto> result = new ArrayList<>();
+        List<Material> allMaterials = null;
+        try {
+            allMaterials = materialRepository.findAll();
+        } catch (Exception e) {
+            log.warn("error in find all");
+        }
+        if (allMaterials != null) {
+            for (Material material : allMaterials) {
+                result.add(createMaterialReportByMaterial(material));
+            }
+        }
+        return result;
+    }
+
+    private MaterialReportResponseDto createMaterialReportByMaterial(Material material) {
+        List<MaterialsTurnover> materialsTurnoverList = null;
+        try {
+            materialsTurnoverList = materialTurnoverRepository.findAllByMaterialId(material.getId());
+        } catch (Exception e) {
+            log.warn("error in find by material id");
+        }
+        Integer totalCount = 0;
+        if (materialsTurnoverList != null) {
+            for (MaterialsTurnover materialsTurnover : materialsTurnoverList) {
+                totalCount += materialsTurnover.getCount();
+            }
+        }
+        return new MaterialReportResponseDto(
+                material.getTitle(),
+                material.getCount(),
+                material.getCountOfSpent(),
+                totalCount,
+                material.getPrice() * totalCount
+        );
+
+    }
+
+    public MoveMoneyTotalResponseDto moneyReport() {
+        List<MoveMoneyResponseDto> children = createMoveMoneyDtoList();
+        return new MoveMoneyTotalResponseDto(children);
+
+    }
+
+    private List<MoveMoneyResponseDto> createMoveMoneyDtoList() {
+        List<MoveMoneyResponseDto> result = new ArrayList<>();
+
+        for (OrderResponseDto orderResponseDto : getAllOrders().getChildren()) {
+            StringBuilder things = createOrderItemsThings(orderResponseDto.getOrderItems());
+
+            result.add(new MoveMoneyResponseDto(
+                    things.toString(),
+                    orderResponseDto.getClient().getName(),
+                    orderResponseDto.getTotalPrice(),
+                    "продажа товаров"
+            ));
+        }
+
+        for (MaterialsTurnover materialsTurnover : materialTurnoverRepository.findAll()) {
+            Long materialId = materialsTurnover.getMaterialId();
+            String title;
+            Integer materialPrice = null;
+            try {
+                Material material = materialRepository.findById(materialId).get();
+                materialPrice = material.getPrice() * materialsTurnover.getCount();
+                title = material.getTitle();
+            } catch (Exception e) {
+                log.warn("find by id materials");
+                continue;
+            }
+
+            String providerName = findProviderNameByMaterialId(materialId);
+
+            result.add(new MoveMoneyResponseDto(
+                    title,
+                    providerName,
+                    materialPrice,
+                    "закупка материала"
+            ));
+        }
+        Collections.shuffle(result);
+        return result;
+    }
+
+    private String findProviderNameByMaterialId(Long materialId) {
+        Provider provider = null;
+        try {
+            provider = providerRepository.findByMaterialId(materialId);
+            return provider.getName();
+        } catch (Exception e) {
+            log.warn("error in find by material provider");
+        }
+        return null;
+
+    }
+
+    private StringBuilder createOrderItemsThings(List<OrderItemResponseDto> orderItems) {
+        StringBuilder result = new StringBuilder();
+        for (OrderItemResponseDto orderItem : orderItems) {
+            result.append(orderItem.getProductName()).append(", ");
+        }
+        if (result.length() > 2) {
+            result.delete(result.length() - 2, result.length());
+        }
+        return result;
+    }
+
+    public MaterialByOrderResponseDto materialByOrder() {
+        List<MaterialByOrderChildrenResponseDto> children = createMaterialByOrderDtoList(); 
+        return new MaterialByOrderResponseDto(children);
+    }
+
+    private List<MaterialByOrderChildrenResponseDto> createMaterialByOrderDtoList() {
+        List<MaterialByOrderChildrenResponseDto> result = new ArrayList<>();
+        List<Order> orderList = orderRepository.findAll();
+
+        for (Order order : orderList) {
+            result.add(new MaterialByOrderChildrenResponseDto(
+                    order.getId(),
+                    findMaterialsListByOrder(order)
+            ));
+        }
+        return result;
+    }
+
+    private List<String> findMaterialsListByOrder(Order order) {
+        Set<String> setMaterials = new HashSet<>();
+        List<Integer> orderItems = order.getOrderItems();
+        for (Integer orderItemId : orderItems) {
+            Product product = null;
+            try {
+                OrderItem orderItem = orderItemRepository.findById(orderItemId.longValue()).get();
+                product = productRepository.findById(orderItem.getProductId()).get();
+            } catch (Exception e) {
+                log.warn("error in find by id or find by id");
+                continue;
+            }
+            List<Integer> materials = product.getMaterials();
+            if (findMaterialsListByMaterialsIdList(materials) != null) {
+                setMaterials.addAll(findMaterialsListByMaterialsIdList(materials));
+            }
+        }
+        return setMaterials.stream().toList();
+    }
+
+    private Set<String> findMaterialsListByMaterialsIdList(List<Integer> materials) {
+        Set<String> result = new HashSet<>();
+        for (Integer materialIds : materials) {
+            Material material = null;
+            try {
+                material = materialRepository.findById(materialIds.longValue()).get();
+            } catch (Exception e) {
+                log.warn("error in find by id material");
+                continue;
+            }
+            result.add(material.getTitle());
+        }
+        return result;
     }
 }

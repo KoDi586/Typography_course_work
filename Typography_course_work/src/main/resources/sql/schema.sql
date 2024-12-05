@@ -1,7 +1,7 @@
 -- Создание таблицы client
 CREATE TABLE IF NOT EXISTS client (
     id bigint PRIMARY KEY,
-    name VARCHAR(100) ,
+    "name" VARCHAR(100) ,
     second_name VARCHAR(100) ,
     email VARCHAR(255) ,
     phone VARCHAR(15) ,
@@ -21,14 +21,15 @@ CREATE TABLE IF NOT EXISTS material (
     id bigint PRIMARY KEY,
     title VARCHAR(255),
     count INTEGER,
+    count_of_spent integer,
     price INTEGER
 );
 
--- Создание таблицы provider
-CREATE TABLE IF NOT EXISTS provider (
-    id bigint PRIMARY KEY,
-    name VARCHAR(255),
-    material_id bigint, -- Один материал на одного поставщика
+
+create table if not exists provider(
+    id bigint primary key,
+    "name" varchar(255),
+    material_id bigint,
     contact_info varchar(255)
 );
 
@@ -43,19 +44,13 @@ CREATE TABLE IF NOT EXISTS "order" (
 -- Создание таблицы order_item
 CREATE TABLE IF NOT EXISTS order_item (
     id bigint PRIMARY KEY,
-    order_id bigint, -- Один заказ может содержать множество order_item
-    product_id bigint, -- Один продукт для одного orderItem
+    order_id bigint,
+    product_id bigint,
     count INTEGER
---    FOREIGN KEY (order_id) REFERENCES "order" (id) ON DELETE CASCADE,
---    FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE
 );
 
----- Добавление связей между product и material через отдельную таблицу
---CREATE TABLE IF NOT EXISTS product_material (
---    product_id serial NOT NULL,
---    material_id serial NOT NULL
-----    PRIMARY KEY (product_id, material_id),
-----    FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE CASCADE,
-----    FOREIGN KEY (material_id) REFERENCES material (id) ON DELETE CASCADE
---);
-
+create table if not exists materials_turnover(
+    id bigint primary key,
+    material_id bigint,
+    count integer
+);

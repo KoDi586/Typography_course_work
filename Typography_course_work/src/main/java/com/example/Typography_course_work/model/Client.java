@@ -14,18 +14,18 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column()
     private String name;
 
-    @Column(name = "second_name", nullable = false)
+    @Column(name = "second_name")
     private String secondName;
 
-    @Column(nullable = false, unique = true)
+    @Column()
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column()
     private String phone;
 
-    @Column(nullable = false)
+    @Column()
     private String card;
 }

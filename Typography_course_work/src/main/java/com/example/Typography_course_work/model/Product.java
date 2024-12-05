@@ -17,13 +17,13 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column()
     private String title;
 
     @Column(name = "materials")
     private List<Integer> materials; // Для связи через массив id
 
-    @Column(nullable = false)
+    @Column()
     private Integer price;
 
 }

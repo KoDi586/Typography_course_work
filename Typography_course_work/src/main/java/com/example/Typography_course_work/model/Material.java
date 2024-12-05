@@ -1,16 +1,10 @@
 package com.example.Typography_course_work.model;
 import jakarta.persistence.*;
-//import jakarta.persistence.Entity;
-//import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "material")
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Material {
@@ -19,13 +13,16 @@ public class Material {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @Column()
     private String title;
 
-    @Column(nullable = false)
+    @Column()
     private Integer count;
 
-    @Column(nullable = false)
+    @Column(name = "count_of_spent")
+    private Integer countOfSpent;
+
+    @Column()
     private Integer price;
 
 }

@@ -1,4 +1,4 @@
-package com.example.Typography_course_work.controller;
+package com.example.Typography_course_work.controller.entityController;
 
 import com.example.Typography_course_work.dto.provider.ProviderAllResponseDto;
 import com.example.Typography_course_work.service.TypographyService;

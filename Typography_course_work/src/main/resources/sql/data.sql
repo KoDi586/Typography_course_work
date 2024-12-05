@@ -1,25 +1,24 @@
 
----- Вставка продуктов с указанием is_new = false и игнорированием конфликтов
 --INSERT INTO public.client (id, name, second_name, email, phone, card)
 --VALUES (3, 'Маргарита', '500', 'Пицца перони', 'false','api/image/1')
 --ON CONFLICT (id) DO NOTHING;
 
 
-INSERT INTO public.material (id, title, count, price)
+INSERT INTO public.material (id, title, count, count_of_spent, price)
 VALUES
-    (1001, 'Материал 1', 100, 50),
-    (1002, 'Материал 2', 200, 75),
-    (1003, 'Материал 3', 150, 60),
-    (1004, 'Материал 4', 120, 40),
-    (1005, 'Материал 5', 80, 30),
-    (1006, 'Материал 6', 300, 90),
-    (1007, 'Материал 7', 250, 100),
-    (1008, 'Материал 8', 50, 20),
-    (1009, 'Материал 9', 180, 55),
-    (1010, 'Материал 10', 400, 150)
+    (1001, 'Материал 1', 100, 0, 50),
+    (1002, 'Материал 2', 200, 0, 75),
+    (1003, 'Материал 3', 150, 0, 60),
+    (1004, 'Материал 4', 120, 0, 40),
+    (1005, 'Материал 5', 80, 0, 30),
+    (1006, 'Материал 6', 300, 0, 90),
+    (1007, 'Материал 7', 250, 0, 100),
+    (1008, 'Материал 8', 50, 0, 20),
+    (1009, 'Материал 9', 180, 0, 55),
+    (1010, 'Материал 10', 400, 0, 150)
 ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO public.provider (id, name, material_id, contact_info) VALUES
+INSERT INTO public.provider (id, "name", material_id, contact_info) VALUES
 (1, 'Поставщик 1', 1001, 'Контактная информация 1'),
 (2, 'Поставщик 2', 1002, 'Контактная информация 2'),
 (3, 'Поставщик 3', 1003, 'Контактная информация 3'),
@@ -49,4 +48,8 @@ VALUES
 ON CONFLICT (id) DO NOTHING;
 
 
-
+insert into "public".materials_turnover (id, material_id, count)
+values
+    (1001, 1002, 50),
+    (1002, 1004, 100)
+ON CONFLICT (id) DO NOTHING;
