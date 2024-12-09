@@ -12,18 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column()
     private String title;
-
     @Column(name = "materials")
-    private List<Integer> materials; // Для связи через массив id
-
-    @Column()
+    private List<Integer> materials;
     private Integer price;
-
 }

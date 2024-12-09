@@ -10,17 +10,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Provider {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column()
     private String name;
-
     @Column(name = "material_id")
     private Long materialId;
-
     @Column(name = "contact_info")
     private String contactInfo;
 }

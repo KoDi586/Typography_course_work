@@ -13,10 +13,8 @@ import lombok.NoArgsConstructor;
 public class MaterialsTurnover {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(name = "material_id")
     private Long materialId;
-    @Column()
     private Integer count;
 }
