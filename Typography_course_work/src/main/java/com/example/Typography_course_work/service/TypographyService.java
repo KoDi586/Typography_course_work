@@ -141,13 +141,14 @@ public class TypographyService {
     }
 
     private Client convertClientDtoToClientModel(ClientRequestDto dto) {
-        clientRepository.findByEmail(dto.getEmail())
+//        clientRepository.findByEmail(dto.getEmail())
         Client client = new Client();
         client.setName(dto.getName());
         client.setSecondName(dto.getSecondName());
         client.setCard(dto.getCard());
         client.setPhone(dto.getPhone());
         client.setEmail(dto.getEmail());
+        client.setId(clientRepository.count()+1);
         Client save = null;
         try {
             save = clientRepository.save(client);
@@ -155,15 +156,7 @@ public class TypographyService {
             log.warn("error in convertClientDtoToClientModel repository save");
         }
         return save;
-        //        clientRepository.save(client);
-//        return new Client(
-//                0L,
-//                clientRequestDto.getName(),
-//                clientRequestDto.getSecondName(),
-//                clientRequestDto.getEmail(),
-//                clientRequestDto.getPhone(),
-//                clientRequestDto.getCard()
-//        );
+
     }
 
     public AllProductResponseDto getAllProducts() {
@@ -319,6 +312,7 @@ public class TypographyService {
             product = productRepository.findById(productDto.getId()).get();
         } catch (Exception e) {
             product = new Product();
+            product.setId(productRepository.count()+1);
         }
         product.setPrice(productDto.getPrice_with_materials());
         product.setTitle(productDto.getTitle());
