@@ -33,15 +33,15 @@ create table if not exists provider(
     contact_info varchar(255)
 );
 
--- Создание таблицы order
+
 CREATE TABLE IF NOT EXISTS "order" (
     id bigint PRIMARY KEY,
-    order_items integer[],-- Один клиент в заказе
+    order_items integer[],
     client_id bigint
 );
 
 
--- Создание таблицы order_item
+
 CREATE TABLE IF NOT EXISTS order_item (
     id bigint PRIMARY KEY,
     order_id bigint,
