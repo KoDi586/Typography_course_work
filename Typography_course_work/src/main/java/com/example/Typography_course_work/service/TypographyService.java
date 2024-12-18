@@ -102,6 +102,7 @@ public class TypographyService {
         if (materials != null) {
             for (Integer materialId : materials) {
                 MaterialsTurnover materialsTurnover = new MaterialsTurnover();
+                materialsTurnover.setId(materialTurnoverRepository.count()+1);
                 materialsTurnover.setCount(orderItemCount);
                 materialsTurnover.setMaterialId(materialId.longValue());
                 try {
@@ -115,6 +116,7 @@ public class TypographyService {
         }
         orderItem.setProductId(productId);
         orderItem.setOrderId(orderId);
+        orderItem.setId(orderItemRepository.count()+1);
         OrderItem save = null;
         try {
             save = orderItemRepository.save(orderItem);
