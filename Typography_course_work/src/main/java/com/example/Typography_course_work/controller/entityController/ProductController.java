@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/product")
-@CrossOrigin(origins = "http://192.168.200.78:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @Slf4j
 public class ProductController {
 
