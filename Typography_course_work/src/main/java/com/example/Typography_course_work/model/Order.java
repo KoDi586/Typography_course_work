@@ -12,14 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @Column(name = "client_id")
     private Long clientId;
-
     @Column(name = "order_items")
     private List<Integer> orderItems;
 }

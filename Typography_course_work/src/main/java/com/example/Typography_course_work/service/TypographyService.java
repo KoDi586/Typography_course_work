@@ -32,6 +32,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class TypographyService {
+    //repository
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
@@ -41,7 +42,6 @@ public class TypographyService {
     private final MaterialTurnoverRepository materialTurnoverRepository;
 
     public void create(CreateOrderRequestDto createOrderRequestDto) {
-        log.info(createOrderRequestDto.toString());
         try {
             convertOrderDtoToOrderModel(createOrderRequestDto);
         } catch (Exception e) {
@@ -49,35 +49,26 @@ public class TypographyService {
         }
     }
 
-    private Order convertOrderDtoToOrderModel(CreateOrderRequestDto createOrderRequestDto) {
+    private void convertOrderDtoToOrderModel(CreateOrderRequestDto createOrderRequestDto) {
         Order orderModel = new Order();
         try {
-            orderModel = orderRepository.save(orderModel);
+            orderModel.setId(orderRepository.count()+1);
         } catch (Exception e) {
-            log.warn("error save in convertOrderDtoToOrderModel");
+            log.warn("error save in order set id");
         }
         Long clientId = convertClientDtoToClientModel(createOrderRequestDto.getClient()).getId();
-        if (orderModel.getId() == null) {
-            log.warn("orderModel without id");
-//            throw new RuntimeException();
-        }
-        List<Integer> orderItemListIds = convertOrderItemsDtoToOrderItemModel(createOrderRequestDto.getOrderItems(), orderModel.getId());
+        List<Integer> orderItemListIds = convertOrderItemsDtoToOrderItemModel(
+                createOrderRequestDto.getOrderItems(),
+                orderModel.getId());
+
         orderModel.setClientId(clientId);
-//        for (OrderItem orderItem : orderItemListIds) {
-//
-//        }
         orderModel.setOrderItems(orderItemListIds);
-//        orderModel.setOrderItems(orderItemList1);
-        Order orderSave = null;
+
         try {
-            orderSave = orderRepository.save(orderModel);
+            orderRepository.save(orderModel);
         } catch (Exception e) {
             log.warn("error in convertOrderDtoToOrderModel repository save");
         }
-        return orderSave;
-//        orderRepository.saveByParams(orderModel.getId(), orderModel.getClientId(), orderModel.getOrderItems());
-//        return orderRepository.findById()
-//        return orderModel;
     }
 
     private List<Integer> convertOrderItemsDtoToOrderItemModel(List<OrderItemRequestDto> orderItems, Long orderId) {
@@ -111,6 +102,7 @@ public class TypographyService {
         if (materials != null) {
             for (Integer materialId : materials) {
                 MaterialsTurnover materialsTurnover = new MaterialsTurnover();
+                materialsTurnover.setId(materialTurnoverRepository.count()+1);
                 materialsTurnover.setCount(orderItemCount);
                 materialsTurnover.setMaterialId(materialId.longValue());
                 try {
@@ -124,6 +116,7 @@ public class TypographyService {
         }
         orderItem.setProductId(productId);
         orderItem.setOrderId(orderId);
+        orderItem.setId(orderItemRepository.count()+1);
         OrderItem save = null;
         try {
             save = orderItemRepository.save(orderItem);
@@ -148,12 +141,14 @@ public class TypographyService {
     }
 
     private Client convertClientDtoToClientModel(ClientRequestDto dto) {
+//        clientRepository.findByEmail(dto.getEmail())
         Client client = new Client();
         client.setName(dto.getName());
         client.setSecondName(dto.getSecondName());
         client.setCard(dto.getCard());
         client.setPhone(dto.getPhone());
         client.setEmail(dto.getEmail());
+        client.setId(clientRepository.count()+1);
         Client save = null;
         try {
             save = clientRepository.save(client);
@@ -161,15 +156,7 @@ public class TypographyService {
             log.warn("error in convertClientDtoToClientModel repository save");
         }
         return save;
-        //        clientRepository.save(client);
-//        return new Client(
-//                0L,
-//                clientRequestDto.getName(),
-//                clientRequestDto.getSecondName(),
-//                clientRequestDto.getEmail(),
-//                clientRequestDto.getPhone(),
-//                clientRequestDto.getCard()
-//        );
+
     }
 
     public AllProductResponseDto getAllProducts() {
@@ -325,6 +312,7 @@ public class TypographyService {
             product = productRepository.findById(productDto.getId()).get();
         } catch (Exception e) {
             product = new Product();
+            product.setId(productRepository.count()+1);
         }
         product.setPrice(productDto.getPrice_with_materials());
         product.setTitle(productDto.getTitle());
